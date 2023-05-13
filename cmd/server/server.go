@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +14,12 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	db, err := sql.Open("sqlite3", "./data/db")
+	if err != nil {
+		log.Fatalf("failed to open database: %v", err)
+	}
+	defer db.Close()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
